@@ -1,0 +1,20 @@
+name: viam_flutter_provisioning_widget
+description: "A new Flutter package project."
+version: 0.0.1
+homepage: https://www.viam.com
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  viam_flutter_bluetooth_provisioning_widget: ^0.0.22
+  viam_flutter_hotspot_provisioning_widget: ^0.0.15
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
