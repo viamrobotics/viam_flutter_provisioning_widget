@@ -60,14 +60,11 @@ class ProvisioningFlowFactory {
     required RobotPart mainPart,
     required bool isNewMachine,
     required bool promptForCredentials,
+    required bool replaceHardware,
     String? fragmentId,
     String? hotspotPrefix,
     String? hotspotPassword,
-    required String agentMinimumVersion,
-    required VoidCallback onSuccess,
-    required VoidCallback existingMachineExit,
-    required VoidCallback nonexistentMachineExit,
-    required VoidCallback agentMinimumVersionExit,
+    Map<String, dynamic>? robotConfig,
   }) async {
     final result = await HotspotProvisioningFlow.show(
       context,
@@ -79,6 +76,8 @@ class ProvisioningFlowFactory {
       hotspotPassword: hotspotPassword,
       promptForCredentials: promptForCredentials,
       isNewMachine: isNewMachine,
+      replaceHardware: replaceHardware,
+      robotConfig: robotConfig,
     );
     return result;
   }

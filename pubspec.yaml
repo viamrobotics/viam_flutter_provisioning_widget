@@ -10,8 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  viam_flutter_bluetooth_provisioning_widget: ^0.0.22
+  viam_flutter_bluetooth_provisioning_widget:
+    git: 
+      url: https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget
+      ref: main
   viam_flutter_hotspot_provisioning_widget: ^0.0.15
+  viam_sdk: ^0.10.0
 
 dev_dependencies:
   flutter_test:

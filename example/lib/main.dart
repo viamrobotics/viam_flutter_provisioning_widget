@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      title: 'Bluetooth Provisioning',
+      title: 'Provisioning',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
