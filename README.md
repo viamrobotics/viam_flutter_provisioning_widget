@@ -1,6 +1,6 @@
 # Viam Flutter Provisioning Widget
 
-This package provides a convenient way to import and use all available provisioning methods in your Flutter project.
+This package provides a convenient way to import and use all available [viam-agent](https://docs.viam.com/manage/reference/viam-agent/) provisioning methods in your Flutter project.
 
 This package currently wraps:
 - [viam_flutter_bluetooth_provisioning_widget](https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget)
