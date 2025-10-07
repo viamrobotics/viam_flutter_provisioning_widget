@@ -6,8 +6,8 @@ import 'consts.dart';
 import 'utils.dart';
 
 enum ProvisioningFlow {
-  standard,
-  tethering,
+  bluetooth,
+  bluetoothTethering,
   hotspot,
 }
 
@@ -26,10 +26,10 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
   Future<void> _createRobot({required ProvisioningFlow provisioningFlow}) async {
     setState(() {
       switch (provisioningFlow) {
-        case ProvisioningFlow.standard:
-          _isLoadingProvisioningFlow = ProvisioningFlow.standard;
-        case ProvisioningFlow.tethering:
-          _isLoadingProvisioningFlow = ProvisioningFlow.tethering;
+        case ProvisioningFlow.bluetooth:
+          _isLoadingProvisioningFlow = ProvisioningFlow.bluetooth;
+        case ProvisioningFlow.bluetoothTethering:
+          _isLoadingProvisioningFlow = ProvisioningFlow.bluetoothTethering;
         case ProvisioningFlow.hotspot:
           _isLoadingProvisioningFlow = ProvisioningFlow.hotspot;
       }
@@ -44,9 +44,9 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       await Future.delayed(const Duration(seconds: 3)); // delay is intentional, so you can see the robot name
       if (mounted) {
         switch (provisioningFlow) {
-          case ProvisioningFlow.standard:
+          case ProvisioningFlow.bluetooth:
             _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
-          case ProvisioningFlow.tethering:
+          case ProvisioningFlow.bluetoothTethering:
             _goToBluetoothTetheringFlow(context, viam, robot, mainPart);
           case ProvisioningFlow.hotspot:
             _goToHotspotFlow(context, viam, robot, mainPart);
@@ -164,8 +164,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                 children: [
                   FilledButton(
                     onPressed: () =>
-                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.standard) : null,
-                    child: _isLoadingProvisioningFlow == ProvisioningFlow.standard
+                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.bluetooth) : null,
+                    child: _isLoadingProvisioningFlow == ProvisioningFlow.bluetooth
                         ? const SizedBox(
                             width: 20,
                             height: 20,
@@ -177,8 +177,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                   FilledButton(
                     key: ValueKey('start-tethering'),
                     onPressed: () =>
-                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.tethering) : null,
-                    child: _isLoadingProvisioningFlow == ProvisioningFlow.tethering
+                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.bluetoothTethering) : null,
+                    child: _isLoadingProvisioningFlow == ProvisioningFlow.bluetoothTethering
                         ? const SizedBox(
                             width: 20,
                             height: 20,
