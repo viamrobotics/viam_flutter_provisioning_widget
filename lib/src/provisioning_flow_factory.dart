@@ -54,7 +54,7 @@ class ProvisioningFlowFactory {
     required Robot robot,
     required Viam viam,
     required RobotPart mainPart,
-    required bool isNewMachine,
+    required bool overrideFragment,
     required bool promptForCredentials,
     required bool replaceHardware,
     String? fragmentId,
@@ -71,7 +71,7 @@ class ProvisioningFlowFactory {
       hotspotPrefix: hotspotPrefix,
       hotspotPassword: hotspotPassword,
       promptForCredentials: promptForCredentials,
-      isNewMachine: isNewMachine,
+      overrideFragment: overrideFragment,
       replaceHardware: replaceHardware,
       robotConfig: robotConfig,
     );

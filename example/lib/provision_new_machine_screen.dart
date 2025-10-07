@@ -126,7 +126,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       context: context,
       viam: viam,
       robot: robot,
-      isNewMachine: true,
+      overrideFragment: true, // do for new machines
       mainPart: mainPart,
       promptForCredentials: true,
       replaceHardware: false,

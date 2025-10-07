@@ -168,7 +168,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         context: context,
         viam: viam,
         robot: robot,
-        isNewMachine: false,
+        overrideFragment: false, // not needed on reconnect
         mainPart: mainPart,
         promptForCredentials: true,
         replaceHardware: false,
