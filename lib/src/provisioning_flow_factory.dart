@@ -1,8 +1,6 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class ProvisioningFlowFactory {
-  /// TODO: comment about fragmentId and psk
-  /// full comments really about all params the other repos need that too
   static Widget bluetoothProvisioningFlow({
     required Viam viam,
     required Robot robot,
@@ -51,8 +49,6 @@ class ProvisioningFlowFactory {
     }
   }
 
-  /// TODO: note about different return type
-  /// ""
   static Future<HotspotProvisioningResult?> hotspotProvisioningFlow({
     required BuildContext context,
     required Robot robot,
@@ -81,6 +77,4 @@ class ProvisioningFlowFactory {
     );
     return result;
   }
-
-  // TODO: flow w/ a fallback, can't do both at once, but can fallback
 }
