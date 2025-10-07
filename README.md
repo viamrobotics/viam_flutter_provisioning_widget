@@ -8,7 +8,7 @@ This package currently wraps:
 
 You can either use `ProvisioningFlowFactory` to generate a provisioning flow, or use the classes from the above packages directly. 
 
-Reading the individual package `README`s is required to get started and ensure your project is setup correctly for the flows you want to support. 
+Reading the `README` for each above package is required to ensure your project is setup correctly for the flows you want to support. 
 
 ## Installation
 
