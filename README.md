@@ -8,7 +8,9 @@ This package currently wraps:
 
 You can either use `ProvisioningFlowFactory` to generate a provisioning flow, or use the classes from the above packages directly. 
 
-Reading the `README` for each above package is required to ensure your project is setup correctly for the flows you want to support. 
+Reading the `README` for each package is required to ensure your project is setup correctly for the flows you want to support. 
+- [Bluetooth Widget README](https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/blob/main/README.md)
+- [Hotspot Widget README](https://github.com/viamrobotics/viam_flutter_hotspot_provisioning_widget/blob/main/README.md)
 
 ## Installation
 
