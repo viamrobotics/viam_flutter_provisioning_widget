@@ -1,5 +1,5 @@
 name: viam_flutter_provisioning_widget
-description: "A new Flutter package project."
+description: "A Flutter package for provisioning Viam machines using multiple methods."
 version: 0.0.1
 homepage: https://www.viam.com
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   viam_flutter_bluetooth_provisioning_widget: ^0.0.24
-  viam_flutter_hotspot_provisioning_widget: ^0.0.15
+  viam_flutter_hotspot_provisioning_widget: ^0.0.18
   viam_sdk: ^0.10.0
 
 dev_dependencies:
