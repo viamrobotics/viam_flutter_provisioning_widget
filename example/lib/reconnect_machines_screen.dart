@@ -102,48 +102,15 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   void _goToBluetoothProvisioningFlow(BuildContext context, Viam viam, Robot robot) async {
     final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
     if (context.mounted) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => BluetoothProvisioningFlow(
-          viam: viam,
-          robot: robot,
-          isNewMachine: false,
-          mainRobotPart: mainPart,
-          psk: Consts.psk,
-          fragmentId: null,
-          agentMinimumVersion: '0.20.0',
-          copy: BluetoothProvisioningFlowCopy(
-            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
-          ),
-          onSuccess: () {
-            Navigator.of(context).pop();
-          },
-          existingMachineExit: () {
-            Navigator.of(context).pop();
-          },
-          nonexistentMachineExit: () {
-            Navigator.of(context).pop();
-          },
-          agentMinimumVersionExit: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ));
-    }
-  }
-
-  void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot) async {
-    final nav = Navigator.of(context);
-    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
-    nav.push(MaterialPageRoute(
-      builder: (context) => BluetoothTetheringFlow(
+      final widget = ProvisioningFlowFactory.bluetoothProvisioningFlow(
         viam: viam,
         robot: robot,
         isNewMachine: false,
-        mainRobotPart: mainPart,
+        mainPart: mainPart,
         psk: Consts.psk,
-        fragmentId: null,
         agentMinimumVersion: '0.20.0',
-        copy: BluetoothProvisioningFlowCopy(
+        tetheringEnabled: false,
+        bluetoothCopy: BluetoothProvisioningFlowCopy(
           checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
         onSuccess: () {
@@ -158,8 +125,67 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         agentMinimumVersionExit: () {
           Navigator.of(context).pop();
         },
-      ),
-    ));
+      );
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
+    }
+  }
+
+  void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot) async {
+    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+    if (context.mounted) {
+      final widget = ProvisioningFlowFactory.bluetoothProvisioningFlow(
+        viam: viam,
+        robot: robot,
+        isNewMachine: false,
+        mainPart: mainPart,
+        psk: Consts.psk,
+        agentMinimumVersion: '0.20.0',
+        tetheringEnabled: true,
+        bluetoothCopy: BluetoothProvisioningFlowCopy(
+          checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+        ),
+        onSuccess: () {
+          Navigator.of(context).pop();
+        },
+        existingMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        nonexistentMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        agentMinimumVersionExit: () {
+          Navigator.of(context).pop();
+        },
+      );
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
+    }
+  }
+
+  void _goToHotspotFlow(BuildContext context, Viam viam, Robot robot) async {
+    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+    if (context.mounted) {
+      final result = await ProvisioningFlowFactory.hotspotProvisioningFlow(
+        context: context,
+        viam: viam,
+        robot: robot,
+        isNewMachine: false,
+        mainPart: mainPart,
+        promptForCredentials: true,
+        replaceHardware: false,
+      );
+      if (context.mounted) {
+        switch (result?.status) {
+          case RobotStatus.online:
+            Navigator.of(context).pop();
+          case RobotStatus.offline:
+            Navigator.of(context).pop();
+          case RobotStatus.loading:
+            Navigator.of(context).pop();
+          case null:
+            break;
+        }
+      }
+    }
   }
 
   void _showActionDialog(BuildContext context, Robot robot) {
@@ -168,21 +194,28 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(robot.name),
-          content: const Text('What would you like to do with this machine?'),
+          content: const Text('How would you like to re-connect this machine?'),
           actions: [
             OutlinedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _goToBluetoothTetheringFlow(context, _viam!, robot);
               },
-              child: const Text('Tether'),
+              child: const Text('Bluetooth Tethering'),
             ),
             OutlinedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _goToBluetoothProvisioningFlow(context, _viam!, robot);
               },
-              child: const Text('Connect'),
+              child: const Text('Bluetooth over WiFi'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _goToHotspotFlow(context, _viam!, robot);
+              },
+              child: const Text('Hotspot'),
             ),
             TextButton(
               onPressed: () {

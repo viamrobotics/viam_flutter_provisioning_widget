@@ -22,7 +22,7 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bluetooth Provisioning'),
+        title: const Text('Viam Provisioning'),
       ),
       body: Center(
         child: Column(

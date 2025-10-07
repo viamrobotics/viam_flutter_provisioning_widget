@@ -5,6 +5,12 @@ import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widge
 import 'consts.dart';
 import 'utils.dart';
 
+enum ProvisioningFlow {
+  standard,
+  tethering,
+  hotspot,
+}
+
 class ProvisionNewRobotScreen extends StatefulWidget {
   const ProvisionNewRobotScreen({super.key});
 
@@ -14,16 +20,18 @@ class ProvisionNewRobotScreen extends StatefulWidget {
 
 class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
   String? _robotName;
-  bool _isLoadingStandardFlow = false;
-  bool _isLoadingTetheringFlow = false;
+  ProvisioningFlow? _isLoadingProvisioningFlow;
   String? _errorString;
 
-  Future<void> _createRobot({required bool tethering}) async {
+  Future<void> _createRobot({required ProvisioningFlow provisioningFlow}) async {
     setState(() {
-      if (tethering) {
-        _isLoadingTetheringFlow = true;
-      } else {
-        _isLoadingStandardFlow = true;
+      switch (provisioningFlow) {
+        case ProvisioningFlow.standard:
+          _isLoadingProvisioningFlow = ProvisioningFlow.standard;
+        case ProvisioningFlow.tethering:
+          _isLoadingProvisioningFlow = ProvisioningFlow.tethering;
+        case ProvisioningFlow.hotspot:
+          _isLoadingProvisioningFlow = ProvisioningFlow.hotspot;
       }
       _errorString = null;
     });
@@ -35,10 +43,13 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       });
       await Future.delayed(const Duration(seconds: 3)); // delay is intentional, so you can see the robot name
       if (mounted) {
-        if (tethering) {
-          _goToBluetoothTetheringFlow(context, viam, robot, mainPart);
-        } else {
-          _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
+        switch (provisioningFlow) {
+          case ProvisioningFlow.standard:
+            _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
+          case ProvisioningFlow.tethering:
+            _goToBluetoothTetheringFlow(context, viam, robot, mainPart);
+          case ProvisioningFlow.hotspot:
+            _goToHotspotFlow(context, viam, robot, mainPart);
         }
       }
     } catch (e) {
@@ -48,79 +59,97 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       });
     } finally {
       setState(() {
-        if (tethering) {
-          _isLoadingTetheringFlow = false;
-        } else {
-          _isLoadingStandardFlow = false;
-        }
+        _isLoadingProvisioningFlow = null;
         _robotName = null;
       });
     }
   }
 
   void _goToBluetoothProvisioningFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => BluetoothProvisioningFlow(
-        viam: viam,
-        robot: robot,
-        isNewMachine: true,
-        mainRobotPart: mainPart,
-        psk: Consts.psk,
-        fragmentId: null,
-        agentMinimumVersion: '0.20.0',
-        copy: BluetoothProvisioningFlowCopy(
-          checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
-        ),
-        onSuccess: () {
-          Navigator.of(context).pop();
-        },
-        existingMachineExit: () {
-          Navigator.of(context).pop();
-        },
-        nonexistentMachineExit: () {
-          Navigator.of(context).pop();
-        },
-        agentMinimumVersionExit: () {
-          Navigator.of(context).pop();
-        },
+    final widget = ProvisioningFlowFactory.bluetoothProvisioningFlow(
+      viam: viam,
+      robot: robot,
+      isNewMachine: true,
+      mainPart: mainPart,
+      psk: Consts.psk,
+      agentMinimumVersion: '0.20.0',
+      tetheringEnabled: false,
+      bluetoothCopy: BluetoothProvisioningFlowCopy(
+        checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
       ),
-    ));
+      onSuccess: () {
+        Navigator.of(context).pop();
+      },
+      existingMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      nonexistentMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      agentMinimumVersionExit: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
   }
 
   void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => BluetoothTetheringFlow(
-        viam: viam,
-        robot: robot,
-        isNewMachine: true,
-        mainRobotPart: mainPart,
-        psk: Consts.psk,
-        fragmentId: null,
-        agentMinimumVersion: '0.20.0',
-        copy: BluetoothProvisioningFlowCopy(
-          checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
-        ),
-        onSuccess: () {
-          Navigator.of(context).pop();
-        },
-        existingMachineExit: () {
-          Navigator.of(context).pop();
-        },
-        nonexistentMachineExit: () {
-          Navigator.of(context).pop();
-        },
-        agentMinimumVersionExit: () {
-          Navigator.of(context).pop();
-        },
+    final widget = ProvisioningFlowFactory.bluetoothProvisioningFlow(
+      viam: viam,
+      robot: robot,
+      isNewMachine: true,
+      mainPart: mainPart,
+      psk: Consts.psk,
+      agentMinimumVersion: '0.20.0',
+      tetheringEnabled: true,
+      bluetoothCopy: BluetoothProvisioningFlowCopy(
+        checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
       ),
-    ));
+      onSuccess: () {
+        Navigator.of(context).pop();
+      },
+      existingMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      nonexistentMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      agentMinimumVersionExit: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
+  }
+
+  void _goToHotspotFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) async {
+    final result = await ProvisioningFlowFactory.hotspotProvisioningFlow(
+      context: context,
+      viam: viam,
+      robot: robot,
+      isNewMachine: true,
+      mainPart: mainPart,
+      promptForCredentials: true,
+      replaceHardware: false,
+    );
+    if (context.mounted) {
+      switch (result?.status) {
+        case RobotStatus.online:
+          Navigator.of(context).pop();
+        case RobotStatus.offline:
+          Navigator.of(context).pop();
+        case RobotStatus.loading:
+          Navigator.of(context).pop();
+        case null:
+          break;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bluetooth Provisioning'),
+        title: const Text('Viam Provisioning'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -134,8 +163,9 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
               child: Column(
                 children: [
                   FilledButton(
-                    onPressed: () => (!_isLoadingTetheringFlow && !_isLoadingStandardFlow) ? _createRobot(tethering: false) : null,
-                    child: _isLoadingStandardFlow
+                    onPressed: () =>
+                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.standard) : null,
+                    child: _isLoadingProvisioningFlow == ProvisioningFlow.standard
                         ? const SizedBox(
                             width: 20,
                             height: 20,
@@ -146,14 +176,27 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                   const SizedBox(height: 16),
                   FilledButton(
                     key: ValueKey('start-tethering'),
-                    onPressed: () => (!_isLoadingTetheringFlow && !_isLoadingStandardFlow) ? _createRobot(tethering: true) : null,
-                    child: _isLoadingTetheringFlow
+                    onPressed: () =>
+                        (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.tethering) : null,
+                    child: _isLoadingProvisioningFlow == ProvisioningFlow.tethering
                         ? const SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
                           )
                         : const Text('Start Tethering Flow'),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    key: ValueKey('start-hotspot'),
+                    onPressed: () => (_isLoadingProvisioningFlow == null) ? _createRobot(provisioningFlow: ProvisioningFlow.hotspot) : null,
+                    child: _isLoadingProvisioningFlow == ProvisioningFlow.hotspot
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                          )
+                        : const Text('Start Hotspot Flow'),
                   ),
                 ],
               ),
