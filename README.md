@@ -17,6 +17,47 @@ Reading the `README` for each package is required to ensure your project is setu
 ```bash
 flutter pub add viam_flutter_provisioning_widget
 ```
+## Usage
+
+```dart
+import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widget.dart';
+
+// Create a Bluetooth flow (standard or tethering based on tetheringEnabled)
+final bluetoothFlow = ProvisioningFlowFactory.bluetoothProvisioningFlow(
+  viam: viam,
+  robot: robot,
+  mainPart: mainPart,
+  isNewMachine: true,
+  psk: 'viamsetup', // Must match hotspot_password from viam-defaults.json
+  fragmentId: null,
+  agentMinimumVersion: '0.21.0',
+  tetheringEnabled: tetheringEnabled,
+  bluetoothCopy: BluetoothProvisioningFlowCopy(
+    checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+  ),
+  onSuccess: () {
+    Navigator.of(context).pop();
+  },
+  existingMachineExit: () {
+    Navigator.of(context).pop();
+  },
+  nonexistentMachineExit: () {
+    Navigator.of(context).pop();
+  },
+  agentMinimumVersionExit: () {
+    Navigator.of(context).pop();
+  },
+);
+
+// Navigate to the flow
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => bluetoothFlow,
+));
+```
+
+## Examples
+
+For complete working examples, see the [example app](example/README.md).
 
 ## License
 
