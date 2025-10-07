@@ -107,7 +107,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         robot: robot,
         isNewMachine: false,
         mainPart: mainPart,
-        psk: Consts.psk,
+        psk: Consts.bluetoothPSK,
         agentMinimumVersion: '0.20.0',
         tetheringEnabled: false,
         bluetoothCopy: BluetoothProvisioningFlowCopy(
@@ -138,7 +138,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         robot: robot,
         isNewMachine: false,
         mainPart: mainPart,
-        psk: Consts.psk,
+        psk: Consts.bluetoothPSK,
         agentMinimumVersion: '0.20.0',
         tetheringEnabled: true,
         bluetoothCopy: BluetoothProvisioningFlowCopy(

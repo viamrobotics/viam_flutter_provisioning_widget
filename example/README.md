@@ -1,6 +1,6 @@
 # Viam Flutter Bluetooth Provisioning Example
 
-This directory contains a complete example app that demonstrates how to use the Viam Flutter Bluetooth Provisioning Widget with two flows: `BluetoothProvisioningFlow` and `BluetoothTetheringFlow`.
+This directory contains a complete example app that demonstrates how to use the Viam Flutter Provisioning Widget with flows for hotspot, Bluetooth, and Bluetooth tethering.
 
 ## Quick Start
 
@@ -25,4 +25,4 @@ flutter run
 ## Requirements
 
 - **Physical Device**: Must be run on a physical device (not a simulator)
-- **viam-agent Version**: Machine must be running `0.20.0`+ for standard flow, `0.21.0`+ for tethering
+- **viam-agent Version**: Machine must be running `0.20.0`+ for standard Bluetooth flow, `0.21.0`+ for Bluetooth tethering

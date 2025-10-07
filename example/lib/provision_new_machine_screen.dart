@@ -71,7 +71,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       robot: robot,
       isNewMachine: true,
       mainPart: mainPart,
-      psk: Consts.psk,
+      psk: Consts.bluetoothPSK,
       agentMinimumVersion: '0.20.0',
       tetheringEnabled: false,
       bluetoothCopy: BluetoothProvisioningFlowCopy(
@@ -99,7 +99,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       robot: robot,
       isNewMachine: true,
       mainPart: mainPart,
-      psk: Consts.psk,
+      psk: Consts.bluetoothPSK,
       agentMinimumVersion: '0.20.0',
       tetheringEnabled: true,
       bluetoothCopy: BluetoothProvisioningFlowCopy(
